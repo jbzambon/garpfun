@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+
+# uv
+# (uv.lock IS committed for reproducibility; do not ignore it)
+
+# Testing / coverage / typing caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Data -- raw/interim/processed are all derived or immutable-cache and
+# regenerable from src/garp/ingest; never commit them. Keep the directories
+# themselves via .gitkeep.
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+
+# Notebooks -- exploration only, but checkpoints are pure noise
+.ipynb_checkpoints/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
+!.env.example
