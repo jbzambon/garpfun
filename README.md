@@ -13,8 +13,9 @@ every backtest result must be read alongside.
 
 ## Status
 
-Phase 0 (scaffolding) complete. No strategy logic yet — see SPEC.md for the
-phase plan.
+Phase 0 (scaffolding) and Phase 1 (data layer: SEC EDGAR fundamentals,
+prices + corporate actions) are done. No factor logic, universe
+construction, or backtest yet — see SPEC.md for the phase plan.
 
 ## Setup
 
@@ -25,6 +26,11 @@ make sync              # install dependencies into .venv
 make precommit-install  # install git pre-commit hooks
 make check              # lint + typecheck + test
 ```
+
+Fetching real data (`make data` / `garp data`) requires a SEC EDGAR contact
+identifier. Copy `.env.example` to `.env` (gitignored, never committed) and
+fill in `GARP_SEC_CONTACT` — see that file and `garp.config` for why this
+isn't optional.
 
 ## Layout
 
@@ -46,7 +52,7 @@ KNOWN_BIASES.md
 ## Commands
 
 ```sh
-make data       # Phase 1: fetch and cache raw data
+make data       # Phase 1: fetch and cache raw data (implemented)
 make universe   # Phase 2: build the point-in-time universe panel
 make factors    # Phase 3: compute factor scores
 make backtest   # Phase 4: run the walk-forward backtest
@@ -54,5 +60,14 @@ make screen     # Phase 5: today's ranked candidate list
 make report     # Phase 5: HTML/markdown report with bias register attached
 ```
 
-Each currently raises `NotImplementedError` pointing at the SPEC.md phase
-that implements it.
+`universe`, `factors`, `backtest`, `screen`, and `report` each raise
+`NotImplementedError` pointing at the SPEC.md phase that implements them.
+
+`data` ingests a specific, small set of names to develop against (Phase 2
+is what will drive it at scale):
+
+```sh
+uv run garp data --tickers KLIC,OXM --start 2015-01-01
+uv run garp data --ciks 320193                    # by CIK instead of ticker
+uv run garp data                                  # refreshes the CIK<->ticker map only
+```

@@ -1,7 +1,9 @@
 """Phase 0 smoke tests: package imports, logging, and CLI wiring.
 
 Strategy-logic tests (point-in-time joins, universe construction, factor
-math) land in their respective phases.
+math) land in their respective phases. `data` (Phase 1) is implemented now
+-- see tests/test_cli_data.py for its own coverage; the commands still
+exercised here as "unimplemented" are Phase 2+.
 """
 
 from __future__ import annotations
@@ -46,7 +48,7 @@ def test_cli_group_lists_all_phase_subcommands() -> None:
 
 def test_cli_unimplemented_phase_raises_with_useful_message() -> None:
     runner = CliRunner()
-    result = runner.invoke(main, ["data"])
+    result = runner.invoke(main, ["universe"])
     assert result.exit_code != 0
     assert isinstance(result.exception, NotImplementedError)
-    assert "Phase 1" in str(result.exception)
+    assert "Phase 2" in str(result.exception)

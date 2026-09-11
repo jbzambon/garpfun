@@ -10,6 +10,8 @@ dependencies = [
     "structlog>=24.4",
     "click>=8.1",
     "pyyaml>=6.0",
+    "requests>=2.32",
+    "yfinance>=0.2.43",
 ]
 
 [project.scripts]
@@ -27,6 +29,7 @@ dev = [
     "mypy>=1.13",
     "pre-commit>=4.0",
     "types-pyyaml>=6.0",
+    "types-requests>=2.32",
 ]
 
 # ---------------------------------------------------------------------------
@@ -79,6 +82,14 @@ no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 show_error_codes = true
+
+# yfinance ships no stubs and its surface is a moving target -- see the
+# module comment above: third-party quant/data libs are allowed to be
+# untyped rather than fighting stub gaps. Everything first-party that
+# touches it (garp.ingest.prices) still has to be fully typed.
+[[tool.mypy.overrides]]
+module = ["yfinance.*"]
+ignore_missing_imports = true
 
 # ---------------------------------------------------------------------------
 # pytest
